@@ -127,7 +127,7 @@ PyInt_FromSsize_t(Py_ssize_t ival)
         return PyInt_FromLong((long)ival);
     return _PyLong_FromSsize_t(ival);
 }
-
+// 对象的引用计数为0，调用此函数
 static void
 int_dealloc(PyIntObject *v)
 {
@@ -438,15 +438,53 @@ PyInt_FromUnicode(Py_UNICODE *s, Py_ssize_t length, int base)
         return Py_NotImplemented;               \
     }
 
+static int values[10];
+static int refcounts[10];
 /* ARGSUSED */
 static int
 int_print(PyIntObject *v, FILE *fp, int flags)
      /* flags -- not used but required by interface */
 {
-    long int_val = v->ob_ival;
-    Py_BEGIN_ALLOW_THREADS
-    fprintf(fp, "%ld", int_val);
-    Py_END_ALLOW_THREADS
+    // 打印调试信息
+    PyIntObject* intObjectPtr;
+    PyIntBlock *p = block_list;
+    PyIntBlock *last = NULL;
+    int count = 0;
+    int i = 0;
+
+    while (p != NULL) {
+        ++count;
+        last = p;
+        p = p->next;
+    }
+
+    intObjectPtr = last->objects;
+    intObjectPtr += N_INTOBJECTS - 1;
+    printf(" address @%p\n", v);
+
+    for (i = 0; i < 10; ++i, --intObjectPtr) {
+        values[i] = intObjectPtr->ob_ival;
+        refcounts[i] = intObjectPtr->ob_refcnt;
+    }
+    printf(" value : ");
+    for (i = 0; i < 8; ++i) {
+        printf("%d\t", values[i]);
+    }
+    printf("\n");
+
+    printf(" refcnt : ");
+    for (i = 0; i < 8; ++i) {
+        printf("%d\t", refcounts[i]);
+    }
+    printf("\n");
+
+    printf(" block_list count : %d\n", count);
+    printf(" free_list : %p\n", free_list);
+
+    //long int_val = v->ob_ival;
+    //Py_BEGIN_ALLOW_THREADS
+    //fprintf(fp, "%ld", int_val);
+    //Py_END_ALLOW_THREADS
     return 0;
 }
 

@@ -20,6 +20,7 @@ _Py_TrueStruct and _Py_ZeroStruct in boolobject.h; don't use this.
 extern "C" {
 #endif
 
+// python中的int就是对C中原生long的一层封装
 typedef struct {
     PyObject_HEAD
     long ob_ival;
