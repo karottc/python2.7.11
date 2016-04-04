@@ -98,6 +98,21 @@ whose size is determined when the object is allocated.
     Py_ssize_t ob_size; /* Number of items in variable part */
 #define Py_INVALID_SIZE (Py_ssize_t)-1
 
+
+// karottc add for testing size.
+typedef struct _object_test {
+    _PyObject_HEAD_EXTRA
+}PyObjectTestHeadExtra;
+typedef struct _object_test1 {
+    _PyObject_HEAD_EXTRA
+    struct _typeobject *ob_type;
+}PyObjectTestHeadExtra1;
+typedef struct _object_test2 {
+    struct _object *_ob_next;
+    struct _object *_ob_prev;
+}PyObjectTestHeadExtra2;
+// karottc test end...
+
 /* Nothing is actually declared to be a PyObject, but every pointer to
  * a Python object can be cast to a PyObject*.  This is inheritance built
  * by hand.  Similarly every pointer to a variable-size Python object can,

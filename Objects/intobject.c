@@ -480,6 +480,14 @@ int_print(PyIntObject *v, FILE *fp, int flags)
 
     printf(" block_list count : %d\n", count);
     printf(" free_list : %p\n", free_list);
+    printf(" size PyIntObject: %ld\n", sizeof(PyIntObject));
+    printf(" size PyObject_HEAD: %ld\n", sizeof(PyObject));
+    printf(" size Py_ssize_t: %ld\n", sizeof(Py_ssize_t));
+    //printf(" size PyObject_HEAD: %ld\n", sizeof(PyObject));
+    printf(" N_INTOBJECTS: %ld\n", N_INTOBJECTS);
+    printf(" size PyObject_HEAD1: %ld\n", sizeof(PyObjectTestHeadExtra));
+    printf(" size PyObject_HEAD2: %ld\n", sizeof(PyObjectTestHeadExtra1));
+    printf(" size PyObject_HEAD3: %ld\n", sizeof(PyObjectTestHeadExtra2));
 
     //long int_val = v->ob_ival;
     //Py_BEGIN_ALLOW_THREADS
